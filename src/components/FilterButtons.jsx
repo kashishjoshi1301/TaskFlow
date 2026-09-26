@@ -137,7 +137,7 @@ const FilterButtons = ({
       return { bg: "bg-[#e4f7ea]", text: "text-[#1f7a45]", dot: "bg-[#1f7a45]" };
     };
 
-    const maxHeight = listMaxHeight || "580px";
+    const maxHeight = listMaxHeight || "575px";
 
   return (
     <div className='w-full'>
@@ -147,18 +147,22 @@ const FilterButtons = ({
 
         <div className='flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 p-3 sm:p-2 sm:pl-5'>
 
-          <div role="group" aria-label="Filter tasks" className='flex flex-wrap gap-2 sm:gap-3'>
-            {["All", "Today", "Upcoming", "In Progress", "Completed"].map((name) => (
-              <button
-                key={name}
-                type="button"
-                onClick={() => setActiveFilter(name)}
-                aria-label={`Show ${name.toLowerCase()} tasks`}
-                aria-pressed={activeFilter === name}
-                className={`flex-1 min-w-[110px] sm:min-w-[120px] text-center ${tabClass(name)}`}
-              >{name}</button>
-            ))}
-          </div>
+          <div 
+            role="group" 
+            aria-label="Filter tasks" 
+            className='flex flex-nowrap gap-2 sm:gap-3 overflow-x-auto scrollbar-none pb-1'
+          > 
+          {["All", "Today", "Upcoming", "In Progress", "Completed"].map((name) => (
+           <button
+            key={name}
+            type="button"
+            onClick={() => setActiveFilter(name)}
+            aria-label={`Show ${name.toLowerCase()} tasks`}
+            aria-pressed={activeFilter === name}
+            className={`shrink-0 text-center whitespace-nowrap ${tabClass(name)}`}
+          >{name}</button>
+          ))}
+        </div>
 
           <button
             type="button"

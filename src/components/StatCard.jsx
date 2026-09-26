@@ -22,6 +22,8 @@ const StatCard = ({
     dueDate: ""
   });
 
+  const [errors, setErrors] = useState({});
+
   const isDark = theme === "dark";
 
   const stats = [
@@ -73,9 +75,14 @@ const StatCard = ({
             })
           }
           aria-label="Task title"
+          aria-invalid={!!errors.title}
+          aria-describedby={errors.title ? "new-task-title-error" : undefined}
           required
-          className={`p-2 rounded-lg border outline-none focus:border-[#22b8cf] ${isDark ? "bg-[#0f172a] border-[#334155] text-[#f1f5f9] placeholder-[#64748b]" : "border-[#e3e7ea] text-[#1b262c] placeholder-[#8a97a0]"}`}
+          className={`p-2 rounded-lg border outline-none focus:border-[#22b8cf] ${errors.title ? "border-[#b23a3a]" : isDark ? "border-[#334155]" : "border-[#e3e7ea]"} ${isDark ? "bg-[#0f172a] text-[#f1f5f9] placeholder-[#64748b]" : "text-[#1b262c] placeholder-[#8a97a0]"}`}
           />
+          {errors.title && (
+            <p id="new-task-title-error" className='text-xs text-[#b23a3a] -mt-2'>Title is mandatory.</p>
+          )}
 
         <label htmlFor="new-task-description" className='sr-only'>Description</label>
         <input 
@@ -89,8 +96,14 @@ const StatCard = ({
         })
         } 
         aria-label="Task description"
-        className={`p-2 rounded-lg border outline-none focus:border-[#22b8cf] ${isDark ? "bg-[#0f172a] border-[#334155] text-[#f1f5f9] placeholder-[#64748b]" : "border-[#e3e7ea] text-[#1b262c] placeholder-[#8a97a0]"}`}
+        aria-invalid={!!errors.description}
+        aria-describedby={errors.description ? "new-task-description-error" : undefined}
+        required
+        className={`p-2 rounded-lg border outline-none focus:border-[#22b8cf] ${errors.description ? "border-[#b23a3a]" : isDark ? "border-[#334155]" : "border-[#e3e7ea]"} ${isDark ? "bg-[#0f172a] text-[#f1f5f9] placeholder-[#64748b]" : "text-[#1b262c] placeholder-[#8a97a0]"}`}
         />
+        {errors.description && (
+          <p id="new-task-description-error" className='text-xs text-[#b23a3a] -mt-2'>Description is mandatory.</p>
+        )}
 
         <label htmlFor="new-task-priority" className='sr-only'>Priority</label>
         <select
@@ -103,12 +116,19 @@ const StatCard = ({
           })
         }
         aria-label="Task priority"
-        className={`p-2 rounded-lg border outline-none focus:border-[#22b8cf] ${isDark ? "bg-[#0f172a] border-[#334155] text-[#f1f5f9]" : "border-[#e3e7ea] text-[#1b262c] bg-white"}`}
+        aria-invalid={!!errors.priority}
+        aria-describedby={errors.priority ? "new-task-priority-error" : undefined}
+        required
+        className={`p-2 rounded-lg border outline-none focus:border-[#22b8cf] ${errors.priority ? "border-[#b23a3a]" : isDark ? "border-[#334155]" : "border-[#e3e7ea]"} ${isDark ? "bg-[#0f172a] text-[#f1f5f9]" : "text-[#1b262c] bg-white"}`}
         >
+          <option value=''>Select priority</option>
           < option value='High'>High</option>
           <option value='Medium'>Medium</option>
           <option value='Low'>Low</option>
         </select>
+        {errors.priority && (
+          <p id="new-task-priority-error" className='text-xs text-[#b23a3a] -mt-2'>Priority chuno.</p>
+        )}
 
         <label htmlFor="new-task-duedate" className='sr-only'>Due Date</label>
         <input
@@ -122,15 +142,32 @@ const StatCard = ({
           })
         }
         aria-label="Task due date"
+        aria-invalid={!!errors.dueDate}
+        aria-describedby={errors.dueDate ? "new-task-duedate-error" : undefined}
+        required
+        min={new Date().toLocaleDateString("en-CA")}
         style={{ colorScheme: isDark ? "dark" : "light" }}
-        className={`p-2 rounded-lg border outline-none focus:border-[#22b8cf] ${isDark ? "bg-[#0f172a] border-[#334155] text-[#f1f5f9]" : "border-[#e3e7ea] text-[#1b262c]"}`}
+        className={`p-2 rounded-lg border outline-none focus:border-[#22b8cf] ${errors.dueDate ? "border-[#b23a3a]" : isDark ? "border-[#334155]" : "border-[#e3e7ea]"} ${isDark ? "bg-[#0f172a] text-[#f1f5f9]" : "text-[#1b262c]"}`}
         />
+        {errors.dueDate && (
+          <p id="new-task-duedate-error" className='text-xs text-[#b23a3a] -mt-2'>
+            {!newTask.dueDate.trim() ? "Due date is mandatory." : "Past dates can’t be selected."}
+          </p>
+        )}
 
         <div className='flex gap-3'>
           <button 
           type='button'
           onClick = {() => {
-            if (!newTask.title.trim()) return;
+            const todayStr = new Date().toLocaleDateString("en-CA");
+            const newErrors = {
+              title: !newTask.title.trim(),
+              description: !newTask.description.trim(),
+              priority: !newTask.priority.trim(),
+              dueDate: !newTask.dueDate.trim() || newTask.dueDate < todayStr,
+            };
+            setErrors(newErrors);
+            if (Object.values(newErrors).some(Boolean)) return;
 
             const task = {
               id: Date.now(),
@@ -152,6 +189,7 @@ const StatCard = ({
               priority: "Medium",
               dueDate: ""
             });
+            setErrors({});
 
             setIsAdding(false);
           }}
@@ -161,7 +199,7 @@ const StatCard = ({
           </button> 
           <button
           type='button'
-          onClick={() => setIsAdding(false)}
+          onClick={() => { setIsAdding(false); setErrors({}); }}
           aria-label="Cancel adding task"
           className={`px-4 py-2 rounded-lg hover:scale-95 ${isDark ? "bg-[#334155] text-[#94a3b8]" : "bg-[#f1f4f6] text-[#5b6b73]"}`}
           >Cancel</button>

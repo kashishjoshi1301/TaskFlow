@@ -4,13 +4,12 @@ import Sidebar from './components/Sidebar';
 import StatCard from './components/StatCard';
 import FilterButtons from './components/FilterButtons';
 import WelcomeScreen from './components/WelcomeScreen';
-import CalendarView from './Calenderview';
+import CalendarView from './components/Calenderview';
 import ProfileView from './components/ProfileView';
 import SettingsView from './components/SettingsView';
 
 const toKey = (d) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-
 
 const parseLocalDate = (dateStr) => {
   if (!dateStr) return null;
@@ -48,10 +47,12 @@ const loadSeenReminders = (name) => {
   }
 };
 
-
 const reminderSig = (r) => `${r.id}-${r.dueDate}-${r.when}`;
 
-const DASHBOARD_LIST_HEIGHT = "clamp(200px, calc(100vh - 540px), 520px)";
+// Every page's content sits inside a box of this exact height (matches CalendarView),
+// with its own internal scroll so short pages don't leave empty space and long
+// pages don't stretch the whole layout.
+const PAGE_HEIGHT_CLASS = "h-[700px] overflow-y-auto";
 
 const App = () => {
   const [userName, setUserName] = useState(() => localStorage.getItem("taskflow-username") || "");
@@ -76,7 +77,7 @@ const App = () => {
     if (!value) setToast([]);
   };
 
- 
+
   const [seenReminders, setSeenReminders] = useState(() =>
     loadSeenReminders(localStorage.getItem("taskflow-username"))
   );
@@ -88,6 +89,11 @@ const App = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("Please choose an image file (PNG, JPG, etc.) — not a PDF or other document.");
+      e.target.value = "";
+      return;
+    }
     const reader = new FileReader();
     reader.onloadend = () => {
       setProfileImage(reader.result);
@@ -161,7 +167,7 @@ const App = () => {
     if (!userName) return;
     setTasks(loadTasks(userName));
     setProfileImage(loadImage(userName));
-    setSeenReminders(loadSeenReminders(userName));
+    setSeenReminders(loadSeenReminders(userName)); // NEW
   }, [userName]);
 
   useEffect(() => {
@@ -191,7 +197,7 @@ const App = () => {
     }
   }, [userName, remindersEnabled]);
 
-  
+
   const reminders = useMemo(() => {
     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const startOfTomorrow = new Date(startOfToday);
@@ -378,8 +384,9 @@ const App = () => {
           />
 
           {activeItem === "Dashboard" && (
-            <>
-              <StatCard
+            <div className={`${PAGE_HEIGHT_CLASS} flex flex-col gap-4 lg:gap-6`}>
+              <div className="shrink-0">
+                <StatCard
                 totalTasks={totalTasks}
                 completedTasks={completedTasks}
                 inProgressTasks={inProgressTasks}
@@ -388,33 +395,38 @@ const App = () => {
                 setTasks={setTasks}
                 theme={theme}
                 userName={userName}
-              />
-              <FilterButtons
-                tasks={tasks}
-                listMaxHeight={393}
-                {...filterProps}
-              />
-            </>
-          )}
+                />
+              </div>
+            <div className="flex-1 min-h-0 flex flex-col">
+            <FilterButtons tasks={tasks} {...filterProps} />
+            </div>
+          </div>
+        )}
 
           {activeItem === "My Tasks" && (
+            <div className={`${PAGE_HEIGHT_CLASS} flex flex-col`}>
             <FilterButtons tasks={tasks} {...filterProps} />
+            </div>
           )}
 
           {activeItem === "Important" && (
+            <div className={`${PAGE_HEIGHT_CLASS} flex flex-col`}>
             <FilterButtons tasks={importantTasks} heading="Important Tasks" {...filterProps} />
+            </div>
           )}
-
+  
           {activeItem === "Profile" && (
-            <ProfileView
-              tasks={tasks}
-              userName={userName}
-              profileImage={profileImage}
-              handleImageUpload={handleImageUpload}
-              removeProfileImage={removeProfileImage}
-              onLogout={handleLogout}
-              theme={theme}
-            />
+            <div className={PAGE_HEIGHT_CLASS}>
+              <ProfileView
+                tasks={tasks}
+                userName={userName}
+                profileImage={profileImage}
+                handleImageUpload={handleImageUpload}
+                removeProfileImage={removeProfileImage}
+                onLogout={handleLogout}
+                theme={theme}
+              />
+            </div>
           )}
 
           {activeItem === "Calendar" && (
@@ -426,17 +438,19 @@ const App = () => {
           )}
 
           {activeItem === "Settings" && (
-            <SettingsView
-              theme={theme}
-              setTheme={setTheme}
-              userName={userName}
-              tasks={tasks}
-              setTasks={setTasks}
-              onRename={handleRename}
-              remindersEnabled={remindersEnabled}
-              setRemindersEnabled={setRemindersEnabled}
-              onDeleteAccount={handleDeleteAccount}
-            />
+            <div className={PAGE_HEIGHT_CLASS}>
+              <SettingsView
+                theme={theme}
+                setTheme={setTheme}
+                userName={userName}
+                tasks={tasks}
+                setTasks={setTasks}
+                onRename={handleRename}
+                remindersEnabled={remindersEnabled}
+                setRemindersEnabled={setRemindersEnabled}
+                onDeleteAccount={handleDeleteAccount}
+              />
+            </div>
           )}
 
         </main>
