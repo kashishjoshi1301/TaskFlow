@@ -168,7 +168,7 @@ const FilterButtons = ({
             type="button"
             onClick={() => setSortAsc(!sortAsc)}
             aria-label={sortAsc ? "Sort by due date ascending, click to reverse" : "Sort by due date descending, click to reverse"}
-            className={`w-full sm:w-auto text-center sm:mr-3 px-3 py-1.5 sm:py-1 rounded-lg hover:scale-95 text-sm ${isDark ? "bg-[#334155] text-[#94a3b8]" : "bg-[#f1f4f6] text-[#5b6b73]"}`}
+            className={`w-full sm:w-auto text-center sm:mr-3 px-3 py-1.5 sm:py-1 rounded-lg hover:scale-95 text-[16px] ${isDark ? "bg-[#334155] text-[#94a3b8]" : "bg-[#f1f4f6] text-[#5b6b73]"}`}
           >
             Sort by: Due Date {sortAsc ? "↑" : "↓"}
           </button>
@@ -193,8 +193,7 @@ const FilterButtons = ({
             className={`flex flex-col gap-3 border-b w-full p-4 rounded ${isDark ? "border-[#334155]" : "border-[#e3e7ea]"}`}
             >
 
-            <div className='flex flex-col sm:flex-row items-start sm:justify-between gap-3 sm:gap-4'>
-
+            <div className='flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-3 sm:gap-4'>
               <div className='flex items-start gap-3 flex-1 min-w-0 w-full sm:w-auto'>
                 <label htmlFor={`task-complete-${task.id}`} className='sr-only'>
                   Mark "{task.title}" as {task.completed ? "incomplete" : "complete"}

@@ -18,7 +18,7 @@ const StatCard = ({
   const [newTask, setNewTask] = useState({
     title: "",
     description: "",
-    priority: "Medium",
+    priority: "Select priority",
     dueDate: ""
   });
 
@@ -119,7 +119,7 @@ const StatCard = ({
         aria-invalid={!!errors.priority}
         aria-describedby={errors.priority ? "new-task-priority-error" : undefined}
         required
-        className={`p-2 rounded-lg border outline-none focus:border-[#22b8cf] ${errors.priority ? "border-[#b23a3a]" : isDark ? "border-[#334155]" : "border-[#e3e7ea]"} ${isDark ? "bg-[#0f172a] text-[#f1f5f9]" : "text-[#1b262c] bg-white"}`}
+        className={`p-2 pl-1 rounded-lg border outline-none focus:border-[#22b8cf] ${errors.priority ? "border-[#b23a3a]" : isDark ? "border-[#334155]" : "border-[#e3e7ea]"} ${isDark ? "bg-[#0f172a] text-[#f1f5f9]" : "text-[#1b262c] bg-white"}`}
         >
           <option value=''>Select priority</option>
           < option value='High'>High</option>
@@ -127,7 +127,7 @@ const StatCard = ({
           <option value='Low'>Low</option>
         </select>
         {errors.priority && (
-          <p id="new-task-priority-error" className='text-xs text-[#b23a3a] -mt-2'>Priority chuno.</p>
+          <p id="new-task-priority-error" className='text-xs text-[#b23a3a] -mt-2'>Select Priority.</p>
         )}
 
         <label htmlFor="new-task-duedate" className='sr-only'>Due Date</label>
