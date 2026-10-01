@@ -175,12 +175,12 @@ const SettingsView = ({
 
       <Section icon={Database} title="Your data" card={card}>
         <Row title="Export tasks" desc={`${tasks.length} Download the task(s) in JSON file.`} muted={muted}>
-          <button type="button" onClick={exportTasks} disabled={tasks.length === 0} className={`${ghostBtn} disabled:opacity-40 w-33 disabled:cursor-not-allowed`}>
+          <button type="button" onClick={exportTasks} disabled={tasks.length === 0} className={`${ghostBtn} disabled:opacity-40 w-35 disabled:cursor-not-allowed`}>
             Download
           </button>
         </Row>
         <Row title="Clear completed tasks" desc={`${completedCount} completed task(s).`} muted={muted}>
-          <button type="button" onClick={clearCompleted} disabled={completedCount === 0} className={`${ghostBtn} disabled:opacity-40 w-33 disabled:cursor-not-allowed`}>
+          <button type="button" onClick={clearCompleted} disabled={completedCount === 0} className={`${ghostBtn} disabled:opacity-40 w-35 disabled:cursor-not-allowed`}>
             Clear
           </button>
         </Row>
@@ -188,12 +188,15 @@ const SettingsView = ({
 
       <Section icon={TriangleAlert} title="Danger zone" card={card} iconColor="#b23a3a">
         <Row title="Delete all tasks" desc="All tasks will be removed, but your account will remain." muted={muted}>
-          <button type="button" onClick={deleteAllTasks} disabled={tasks.length === 0} className={`${dangerBtn} disabled:opacity-40 w-33 disabled:cursor-not-allowed`}>
+          <button type="button" onClick={deleteAllTasks} disabled={tasks.length === 0} className={`${dangerBtn} disabled:opacity-40 w-35 disabled:cursor-not-allowed`}>
             Delete tasks
           </button>
         </Row>
         <Row title="Delete account" desc="All tasks, photos, and settings belonging to this user will be deleted." muted={muted}>
-          <button type="button" onClick={deleteAccount} className={dangerBtn}>Delete account</button>
+          <button type="button" onClick={deleteAccount}
+          className={`w-35 ${dangerBtn}`}>
+          Delete account
+          </button>
         </Row>
       </Section>
     </div>
