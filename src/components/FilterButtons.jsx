@@ -98,7 +98,7 @@ const FilterButtons = ({
       updateTask(task.id, { inProgress: !task.inProgress });
 
     const tabClass = (tabName) =>
-      `py-1 px-3 rounded-lg hover:scale-95 transition-colors duration-150 ${
+      `rounded-lg hover:scale-95 transition-colors duration-150 ${
         activeFilter === tabName
           ? "bg-[#0c7c92] text-white font-semibold"
           : isDark
@@ -145,12 +145,12 @@ const FilterButtons = ({
 
         <h1 className={`text-xl sm:text-2xl font-bold py-3 px-3 sm:px-5 ${isDark ? "text-[#f1f5f9]" : "text-[#1b262c]"}`}>{heading}</h1>
 
-        <div className='flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 p-3 sm:p-2 sm:pl-5'>
+        <div className='flex flex-row flex-wrap items-center justify-between gap-3 p-3 sm:p-2 sm:pl-5'>
 
           <div 
             role="group" 
             aria-label="Filter tasks" 
-            className='flex flex-nowrap gap-2 sm:gap-3 overflow-x-auto scrollbar-none pb-1'
+            className='flex flex-nowrap items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-none'
           > 
           {["All", "Today", "Upcoming", "In Progress", "Completed"].map((name) => (
            <button
@@ -159,7 +159,7 @@ const FilterButtons = ({
             onClick={() => setActiveFilter(name)}
             aria-label={`Show ${name.toLowerCase()} tasks`}
             aria-pressed={activeFilter === name}
-            className={`shrink-0 text-center whitespace-nowrap ${tabClass(name)}`}
+            className={`shrink-0 text-center whitespace-nowrap py-1.5 px-3 text-sm ${tabClass(name)}`}
           >{name}</button>
           ))}
         </div>
@@ -168,7 +168,7 @@ const FilterButtons = ({
             type="button"
             onClick={() => setSortAsc(!sortAsc)}
             aria-label={sortAsc ? "Sort by due date ascending, click to reverse" : "Sort by due date descending, click to reverse"}
-            className={`w-full sm:w-auto text-center sm:mr-3 px-3 py-1.5 sm:py-1 rounded-lg hover:scale-95 text-[16px] ${isDark ? "bg-[#334155] text-[#94a3b8]" : "bg-[#f1f4f6] text-[#5b6b73]"}`}
+            className={`shrink-0 text-center py-1.5 px-3 rounded-lg hover:scale-95 mr-2.5 text-sm whitespace-nowrap ${isDark ? "bg-[#334155] text-[#94a3b8]" : "bg-[#f1f4f6] text-[#5b6b73]"}`}
           >
             Sort by: Due Date {sortAsc ? "↑" : "↓"}
           </button>
