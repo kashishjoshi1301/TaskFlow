@@ -49,9 +49,6 @@ const loadSeenReminders = (name) => {
 
 const reminderSig = (r) => `${r.id}-${r.dueDate}-${r.when}`;
 
-// Every page's content sits inside a box of this exact height (matches CalendarView),
-// with its own internal scroll so short pages don't leave empty space and long
-// pages don't stretch the whole layout.
 const PAGE_HEIGHT_CLASS = "h-[700px] overflow-y-auto";
 
 const App = () => {
