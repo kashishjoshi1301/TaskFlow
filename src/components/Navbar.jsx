@@ -32,11 +32,11 @@ const Navbar = ({
             </button>
 
             <div
-              className={`group flex flex-row items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border-2 flex-1 bg-white min-w-0 transition-all duration-200 ${
-                isDark
-                  ? "bg-[#1e293b] border-transparent hover:bg-[#243244] hover:border-[#22b8cf]/40 focus-within:bg-[#0f172a] focus-within:border-[#22b8cf] focus-within:shadow-[0_0_0_4px_rgba(34,184,207,0.15)]"
-                  : "bg-[#f1f4f6] border-transparent hover:bg-[#e7edf0] hover:border-[#22b8cf]/40 focus-within:bg-white focus-within:border-[#22b8cf] focus-within:shadow-[0_0_0_4px_rgba(34,184,207,0.15)]"
-              }`}
+            className={`group flex flex-row items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border-2 flex-1 min-w-0 transition-all duration-200 ${
+            isDark
+            ? "bg-[#1e293b] border-transparent hover:bg-[#243244] hover:border-[#22b8cf]/40 focus-within:bg-[#0f172a] focus-within:border-[#22b8cf] focus-within:shadow-[0_0_0_4px_rgba(34,184,207,0.15)]"
+            : "bg-white border-transparent hover:bg-[#f7f9fa] hover:border-[#22b8cf]/40 focus-within:bg-white focus-within:border-[#22b8cf] focus-within:shadow-[0_0_0_4px_rgba(34,184,207,0.15)]"
+            }`}
             >
               <Search
                 size={16}
